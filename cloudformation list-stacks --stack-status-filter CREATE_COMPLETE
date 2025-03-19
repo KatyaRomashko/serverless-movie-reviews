@@ -1,0 +1,15 @@
+{
+    "StackSummaries": [
+        {
+            "StackId": "arn:aws:cloudformation:eu-west-1:287719337984:stack/CDKToolkit/7b7a7330-0407-11f0-bb8a-06a20e710f83",
+            "StackName": "CDKToolkit",
+            "TemplateDescription": "This stack includes resources needed to deploy AWS CDK apps into this environment",
+            "CreationTime": "2025-03-18T14:44:23.295000+00:00",
+            "LastUpdatedTime": "2025-03-18T14:44:28.745000+00:00",
+            "StackStatus": "CREATE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        }
+    ]
+}
