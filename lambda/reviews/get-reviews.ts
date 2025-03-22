@@ -1,16 +1,17 @@
-import { Handler } from "aws-lambda";
+import { APIGatewayProxyHandlerV2 } from "aws-lambda";
 
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, QueryCommand } from "@aws-sdk/lib-dynamodb";
 
 const ddbDocClient = createDDbDocClient();
 
-export const handler: Handler = async (event, context) => {
-  try {
+export const handler: APIGatewayProxyHandlerV2 = async (event, context) => {     // Note change
+    try {
     // Print Event
-    console.log("Event: ", JSON.stringify(event?.queryStringParameters));
+    console.log("[EVENT]", JSON.stringify(event));
+    const pathParameters = event?.pathParameters;
+    const movieId = pathParameters?.movieId ? parseInt(pathParameters.movieId) : undefined;
     const parameters = event?.queryStringParameters;
-    const movieId = parameters?.movieId;
     const reviewId = parameters?.reviewId;
     const reviewerName = parameters?.reviewerName;
 
