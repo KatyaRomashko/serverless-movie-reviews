@@ -36,7 +36,20 @@ export class ReviewAppStack extends cdk.Stack {
           REGION: 'eu-west-1',
         },
     });
-   
+    const newReviewFn = new lambdanode.NodejsFunction(
+        this, 
+        "AddReviewFn", 
+        {
+        architecture: lambda.Architecture.ARM_64,
+        runtime: lambda.Runtime.NODEJS_22_X,
+        entry: `${__dirname}/../lambdas/reviews/add-review.ts`,
+        timeout: cdk.Duration.seconds(10),
+        memorySize: 128,
+        environment: {
+            REVIEWS_TABLE_NAME: reviewsTable.tableName,
+          REGION: "eu-west-1",
+        },
+      });
 
   
     new custom.AwsCustomResource(this, "ReviewsInitData", {
@@ -57,7 +70,30 @@ export class ReviewAppStack extends cdk.Stack {
 
 // Permissions 
     reviewsTable.grantReadData(getReviewsFn);
+    reviewsTable.grantWriteData(newReviewFn);
 
+     // REST API 
+     const api = new apig.RestApi(this, "ReviewAPI", {
+        description: "Review api",
+        deployOptions: {
+          stageName: "dev",
+        },
+        defaultCorsPreflightOptions: {
+          allowHeaders: ["Content-Type", "X-Amz-Date"],
+          allowMethods: ["OPTIONS", "GET", "POST", "PUT", "PATCH", "DELETE"],
+          allowCredentials: true,
+          allowOrigins: ["*"],
+        },
+      });
+  
+     
+      const reviewsEndpoint = api.root.addResource("reviews");
+      const movieReviewEndpoint = reviewsEndpoint.addResource("{movieId")
+      movieReviewEndpoint.addMethod(
+        "GET",
+        new apig.LambdaIntegration(getReviewsFn, { proxy: true })
+      );
+      reviewsEndpoint.addMethod("POST", new apig.LambdaIntegration(newReviewFn));
   
     
   }
