@@ -26,7 +26,7 @@ export const handler: APIGatewayProxyHandlerV2 = async (event, context) => {    
     }
 
     const queryParams: any = {
-        TableName: process.env.TABLE_NAME,
+        TableName: process.env.REVIEWS_TABLE_NAME,
         KeyConditionExpression: "movieId = :movieId",
         ExpressionAttributeValues: {
           ":movieId": movieId,
