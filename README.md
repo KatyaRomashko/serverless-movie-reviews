@@ -12,7 +12,7 @@ This repository contains a serverless application for managing movie reviews. It
 - Translate reviews to other languages.
 - User authentication, including sign-up, login, and logout functionality.
 
-To run the program, you need to execute the command `cdk deploy`.
+To run the program, you need to execute the command `cdk deploy --all`.
 
 ### App API Endpoints
 
